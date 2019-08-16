@@ -2,7 +2,7 @@
 
 # How to use it
 
-`from Download import Downloader`
+`from Download import Downloader`\n
 `down = Downloaader(url, path)`
 #path eg:`/home/test_download.jpg`
 `down.isBar=Ture`
