@@ -1,6 +1,6 @@
-A downloader for Python3
+### A downloader for Python3
 
-How to use it
+# How to use it
 
 from Download import Downloader
 down = Downloaader(url, path)  #path eg:`/home/test_download.jpg`
