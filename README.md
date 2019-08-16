@@ -1,6 +1,7 @@
 A downloader for Python3
 
-#How to use it
+How to use it
+
 from Download import Downloader
 down = Downloaader(url, path)  #path eg:`/home/test_download.jpg`
 down.isBar=Ture  # This statement can make a progress bar in bash terminal when you downloading file. Default is False.
