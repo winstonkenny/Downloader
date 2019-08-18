@@ -39,6 +39,7 @@ class Downloader:
                               'ChunkedEncodingError', 'Stay', 
                               'Donenot', 'Writing')
         self.status_index = 5
+        self.size_show = ''
     
     def start(self):
         self.startTime = time.time()
@@ -70,9 +71,10 @@ class Downloader:
         self.status_index = 0
         try:
             print('Collecting... %s'%self.url)
-            response = requests.get(self.url, stream=True, timeout=self.timeout)#stream mode is must be select
+            response = requests.get(self.url, stream=True, 
+                    timeout=self.timeout)#stream mode is must be select
             chunk_size = self.chunkSize#pack size
-            content_size = int(response.headers['content-length'])#file main size
+            content_size = int(response.headers['content-length'])#main size
             time_count = time.time()
 #            print(response.status_code)
             if response.status_code == 200:
@@ -80,17 +82,18 @@ class Downloader:
                     self.status_index = 7
                     step_num = content_size/chunk_size
                     if content_size < 1024**2:  # KB
-                        show = '%.1fKB'%(content_size/1024)
+                        self.size_show = '%.1fKB'%(content_size/1024)
                     elif content_size < 1024**3:
-                        show = '%.1fMB'%(content_size/(1024**2))
+                        self.size_show = '%.1fMB'%(content_size/(1024**2))
                     elif content_size < 1024**4:
-                        show = '%.1fGB'%(content_size/(1024**3))
+                        self.size_show = '%.1fGB'%(content_size/(1024**3))
                     else:
-                        show = 'The file is too large'
+                        self.size_show = 'The file is too large'
 
-                    print('  Downloading %s (%s)'%(self.url, show))
+                    print('  Downloading %s (%s)'%(self.url, self.size_show))
                     if self.isBar:
-                        bar = DownloadBar('    %(percent).2f%%', max=step_num, suffix='[%(speed_)s][%(eta_td)s]')
+                        bar = DownloadBar('    %(percent).2f%%', max=step_num, 
+                                suffix='[%(speed_)s][%(eta_td)s]')
                     else:
                         pass
 
@@ -111,7 +114,8 @@ class Downloader:
                         pass
                     file.close()
                 self.endTime = time.time()
-                print("[%s]Download Done! Used time%.2fs"%(self.fileName, self.endTime - self.startTime))
+                print("[%s(%s)]Download Done! Used time%.2fs"
+                        %(self.fileName, self.size_show, self.endTime - self.startTime))
                 self.status_index = 2
             else:
 #                print('Requests is not allow!')
